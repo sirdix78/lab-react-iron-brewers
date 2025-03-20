@@ -12,6 +12,8 @@ import axios from "axios";
 function AllBeersPage() {
   // Mock initial state, to be replaced by data from the API. Once you retrieve the list of beers from the Beers API store it in this state variable.
   const [beers, setBeers] = useState(beersJSON);
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     async function getAllBeers() {
       try {
@@ -29,39 +31,43 @@ function AllBeersPage() {
 
   return (
     <>
-      <Search />
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <div className="d-inline-flex flex-wrap justify-content-center align-items-center w-100 p-4">
         {beers &&
-          beers.map((beer, i) => {
-            return (
-              <div key={i}>
-                <Link to={"/beers/" + beer._id}>
-                  <div
-                    className="card m-2 p-2 text-center"
-                    style={{ width: "24rem", height: "18rem" }}
-                  >
-                    <div className="card-body">
-                      <img
-                        src={beer.image_url}
-                        style={{ height: "6rem" }}
-                        alt={"image of" + beer.name}
-                      />
-                      <h5 className="card-title text-truncate mt-2">
-                        {beer.name}
-                      </h5>
-                      <h6 className="card-subtitle mb-3 text-muted">
-                        <em>{beer.tagline}</em>
-                      </h6>
-                      <p className="card-text">
-                        Created by: {beer.contributed_by}
-                      </p>
+          beers
+            .filter((oneBeer) =>
+              oneBeer.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((beer, i) => {
+              return (
+                <div key={i}>
+                  <Link to={"/beers/" + beer._id}>
+                    <div
+                      className="card m-2 p-2 text-center"
+                      style={{ width: "24rem", height: "18rem" }}
+                    >
+                      <div className="card-body">
+                        <img
+                          src={beer.image_url}
+                          style={{ height: "6rem" }}
+                          alt={"image of" + beer.name}
+                        />
+                        <h5 className="card-title text-truncate mt-2">
+                          {beer.name}
+                        </h5>
+                        <h6 className="card-subtitle mb-3 text-muted">
+                          <em>{beer.tagline}</em>
+                        </h6>
+                        <p className="card-text">
+                          Created by: {beer.contributed_by}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
+                  </Link>
+                </div>
+              );
+            })}
       </div>
     </>
   );

@@ -11,6 +11,7 @@ function AddBeerPage() {
   const [brewersTips, setBrewersTips] = useState("");
   const [attenuationLevel, setAttenuationLevel] = useState(0);
   const [contributedBy, setContributedBy] = useState("");
+  const nav = useNavigate();
 
   // Handler functions for the form inputs. You can leave these as they are.
   const handleName = (e) => setName(e.target.value);
@@ -36,7 +37,7 @@ function AddBeerPage() {
       imageUrl: imageUrl,
       firstBrewed: firstBrewed,
       brewersTips: brewersTips,
-      attenuationLevel: attenuationLevel,
+      attenuationLevel: Number(attenuationLevel),
       contributedBy: contributedBy,
     };
     axios
